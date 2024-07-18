@@ -12,14 +12,15 @@ export class UsersService {
   getHashPassword = (password)=>{
     return hashSync(password,genSaltSync(10));
   }
-  async create(email, password, name) {
-    const hashPassword = this.getHashPassword(password);
+
+  create(users:CreateUserDto){
+    const hashPassword = this.getHashPassword(users.password);
+
     let user = await this.userModel.create({
       email,
       password:hashPassword,
       name,
     });
-    console.log(user)
     return user;
   }
 

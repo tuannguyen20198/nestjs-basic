@@ -14,13 +14,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Controller('users') // => /users
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
   @Post()
-  create(
-    // @Body('email') email,
-    // @Body('password') password,
-    // @Body('name') name,
-    @Body()  CreateUserDto:CreateUserDto
-  ) {
+  create( @Body()  CreateUserDto:CreateUserDto) 
+  {
     return this.usersService.create(CreateUserDto);
   }
 
@@ -31,12 +28,12 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Patch()
+  update(@Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update( updateUserDto);
   }
 
   @Delete(':id')

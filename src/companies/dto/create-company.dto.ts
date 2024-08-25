@@ -2,18 +2,18 @@ import { IsEmail,IsNotEmpty } from "class-validator";
 
 export class CreateCompanyDto {
 
-  @IsEmail({},{
-    message:"Name không đúng định dạng"
+  @IsNotEmpty({
+    message:"Name không đúng định dạng1"
   })
   name:string;
 
-  @IsEmail({},{
-    message:"Address không đúng định dạng"
+  @IsNotEmpty({
+    message:"Email không được để trống"
   })
-  address:string;
+  address: string;
 
-  @IsEmail({},{
-    message:"Description không đúng định dạng"
+  @IsNotEmpty({
+    message:"Description không được để trống"
   })
   description:string;
 

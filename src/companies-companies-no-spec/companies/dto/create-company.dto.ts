@@ -1,6 +1,6 @@
 import { IsEmail,IsNotEmpty } from "class-validator";
 
-export class CreateUserDto {
+export class CreateCompanyDto {
 
   @IsEmail({},{
     message:"Name không đúng định dạng"

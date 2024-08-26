@@ -28,6 +28,7 @@ import { CompaniesModule } from './companies/companies.module';
   ],
   controllers: [AppController],
   providers: [
-    AppService],
+    AppService,
+  ],
 })
 export class AppModule {}

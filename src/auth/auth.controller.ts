@@ -1,8 +1,9 @@
-import { Controller,Post, UseGuards,Request,Get, Req, Res } from '@nestjs/common';
+import { Controller,Post, UseGuards,Request,Get, Req, Res, Body } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
-import { Public } from 'src/decorator/customize';
+import { Public, ResponseMessage } from 'src/decorator/customize';
 import { LocalAuthGuard } from './local-auth.guard';
+import { RegisterUserDto } from 'src/users/dto/create-user.dto';
 
 
 @Controller("auth")
@@ -20,13 +21,9 @@ export class AuthController {
     }
 
     @Public()
-    @Get('profile')
-    getProfile(@Request() req) {
-      return req.user
-    }
-
-    @Get('profile1')
-    getProfile1(@Request() req) {
-      return req.user
+    @ResponseMessage("Create a new register")
+    @Post('/register')
+    async register(@Body() registerUserDto:RegisterUserDto) {
+      return this.authService.register(registerUserDto);
     }
 }

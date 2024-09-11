@@ -53,7 +53,7 @@ export class User {
     email:string;
   }
   @Prop()
-  createAt: Date;
+  createdAt: Date;
 
   @Prop()
   updatedAt: Date;

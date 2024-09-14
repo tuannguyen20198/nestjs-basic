@@ -90,4 +90,5 @@ export class RegisterUserDto {
     message:"Address không được để trống"
   })
   address:string;
+  role:string;
 }

@@ -26,16 +26,15 @@ export class UsersService {
     const {name,email,password,age,gender,address,role,company} = createUserDto;
     const hashPassword = await this.getHashPassword(password)
 
-    //add logic check email
-    // const isExist = await this.userModel.findOne({email});
-    // if (isExist) {
-    //   throw new BadRequestException(`Email:${email} đã tồn tại trên hệ thống.Vui lòng đăng nhập email khác`)
-    // }
+    const isExist = await this.userModel.findOne({email});
+    if (isExist) {
+      throw new BadRequestException(`Email:${email} đã tồn tại trên hệ thống.Vui lòng đăng nhập email khác`)
+    }
     const newUser = this.userModel.create({
       name,email,
-      password:hashPassword,age,
-      gender,address,
-      role,company,
+      password:hashPassword,
+      age,
+      gender,address,role,company,
       createdBy:{
         _id:user._id,
         email:user.email
@@ -59,6 +58,7 @@ export class UsersService {
     .skip(offset)
     .limit(defaultLimit)
     .sort(sort as any)
+    .select('-password')
     .populate(population)
     .exec();
 
@@ -90,7 +90,7 @@ export class UsersService {
     return compareSync(password,hashPassword);
   }
   async update(updateUserDto: UpdateUserDto, @User() user:IUser) {
-    return await this.userModel.updateOne(
+    const updated= await this.userModel.updateOne(
       {_id:updateUserDto._id},
       {
         ...updateUserDto,
@@ -100,34 +100,39 @@ export class UsersService {
         }
       }
     );
+    return updated
   }
 
   async remove(id: string,@User() user:IUser) {
     if (!mongoose.Types.ObjectId.isValid(id)) return `not found user`
-    await this.userModel.updateOne({
-      deletedBy:{
-        _id:user._id,
-        email:user.email
+    await this.userModel.updateOne(
+      {_id:id},
+      {
+        deletedBy:{
+          _id:user._id,
+          email:user.email
+        }
       }
-    })
+    )
     return this.userModel.softDelete({
-      _id:id,
-    });
+      _id:id
+    })
   }
   
   async register(user:RegisterUserDto){
-    const {name,email,password,age,gender} = user;
+    const {name,email,password,age,gender,address} = user;
+    const hashPassword = await this.getHashPassword(password);
     const isExist = await this.userModel.findOne({email});
     if (isExist) {
       throw new BadRequestException(`Email ${email} đã tồn tại.Vui lòng đăng ký tài khoản khác`);
     }
-    const hashPassword = await this.getHashPassword(password);
     const newUser = await this.userModel.create({
       name,
       email,
       password:hashPassword,
       age,
-      gender
+      gender,
+      address,
     })
     return newUser
   }

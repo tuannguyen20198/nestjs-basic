@@ -16,12 +16,13 @@ export class AuthController {
     @Public()
     @UseGuards(LocalAuthGuard)
     @Post('/login')
+    @ResponseMessage("User Login")
     async login(@Request() req) {
       return this.authService.login(req.user);
     }
 
     @Public()
-    @ResponseMessage("Create a new register")
+    @ResponseMessage("Register a new user")
     @Post('/register')
     async register(@Body() registerUserDto:RegisterUserDto) {
       return this.authService.register(registerUserDto);

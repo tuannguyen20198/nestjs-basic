@@ -3,10 +3,16 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { IUser } from 'src/users/users.interface';
 import { RegisterUserDto } from 'src/users/dto/create-user.dto';
-
+import { ConfigService } from '@nestjs/config';
+import ms from "ms"
+import { Response } from 'express';
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService) {}
+  constructor(
+    private usersService: UsersService, 
+    private jwtService: JwtService,
+    private configService:ConfigService
+  ){}
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOneByUsername(username);
@@ -19,7 +25,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: IUser) {
+  async login(user: IUser,response:Response) {
     const {_id,name,email,role} = user;
     const payload = { 
       sub:"token login",
@@ -27,22 +33,41 @@ export class AuthService {
       _id,
       name,
       email,
-      role
     };
+
+    const refresh_token = this.createRefreshToken(payload)
+
+    //Update user with refresh token 
+    await this.usersService.updateUserToken(refresh_token,_id);
+    //set refresh_token as cookies
+    await response.cookie('refreshToken',refresh_token,{
+      httpOnly:true,
+      maxAge:ms(this.configService.get<string>("JWT_REFRESH_EXPIRE"))
+    });
     return {
       access_token: this.jwtService.sign(payload),
-      _id,
-      name,
-      email,
-      role
+      user:{
+        _id,
+        name,
+        email,
+        role
+      }
     };
   }
 
-  async register(registerUserDto:RegisterUserDto){
-    const newUser = await this.usersService.register(registerUserDto);
+  async register(user:RegisterUserDto){
+    const newUser = await this.usersService.register(user);
     return{
-      _id:newUser._id,
-      createdAt:newUser.createdAt
+      _id:newUser?._id,
+      createdAt:newUser?.createdAt
     }
+  }
+
+  createRefreshToken = (payload:any) => {
+    const refresh_token =  this.jwtService.sign(payload,{
+      secret:this.configService.get<string>("JWT_REFRESH_TOKEN_SECRET"),
+      expiresIn:ms(this.configService.get<string>("JWT_REFRESH_EXPIRE"))  / 1000
+    });
+    return refresh_token;
   }
 }

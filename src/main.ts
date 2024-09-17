@@ -23,9 +23,10 @@ async function bootstrap() {
   //config cors
   // Cấu hình CORS với NestJS (Có thể bỏ qua nếu bạn đã dùng middleware cors)
   app.enableCors({
-    origin: '*', // Có thể thay đổi thành danh sách các nguồn được phép
+    origin: true, // Có thể thay đổi thành danh sách các nguồn được phép
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue:false
+    preflightContinue:false,
+    credentials:true
   });
   //config versioning
   app.setGlobalPrefix('api');

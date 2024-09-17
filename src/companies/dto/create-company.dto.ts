@@ -3,7 +3,7 @@ import { IsEmail,IsNotEmpty } from "class-validator";
 export class CreateCompanyDto {
 
   @IsNotEmpty({
-    message:"Name không đúng định dạng1"
+    message:"Name không đúng định dạng"
   })
   name:string;
 

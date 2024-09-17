@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsEmail,IsNotEmpty, IsNotEmptyObject, IsObject, ValidateNested } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsDate, IsDateString, IsEmail,IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from "class-validator";
 import mongoose from "mongoose";
 
 class Company {
@@ -19,13 +19,17 @@ export class CreateJobDto {
   @IsNotEmpty({
     message:"Skills không được để trống"
   })
-  @IsArray()
-  skills: string;
-
   @IsNotEmpty({
-    message:"Location không được để trống"
+    message: "Skills không được để trống"
   })
-  location: string;
+  @IsArray({
+    message: "Skills không đúng định dạng"
+  })
+  @ArrayNotEmpty({
+    message: "Skills không được để trống"
+  })
+  @IsString({ each: true, message: "Skills phải là chuỗi" })
+  skills: string[];
 
   @IsNotEmpty({
     message:"Salary không được để trống"
@@ -48,15 +52,19 @@ export class CreateJobDto {
   description: string;
 
   @IsNotEmpty({
-    message:"StartDate không được để trống"
+    message: "StartDate không được để trống"
   })
-  @IsDate()
+  @IsDateString({}, {
+    message: "StartDate không đúng định dạng, phải là chuỗi ISO"
+  })
   startDate: Date;
 
   @IsNotEmpty({
-    message:"EndDate không được để trống"
+    message: "EndDate không được để trống"
   })
-  @IsDate()
+  @IsDateString({}, {
+    message: "EndDate không đúng định dạng, phải là chuỗi ISO"
+  })
   endDate: Date;
 
   isActive: boolean;

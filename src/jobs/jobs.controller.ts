@@ -10,7 +10,6 @@ import { IUser } from 'src/users/users.interface';
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post()
   @ResponseMessage("Create a new job")
   

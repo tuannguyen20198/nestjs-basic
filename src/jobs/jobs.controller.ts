@@ -1,15 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { ResponseMessage, User } from 'src/decorator/customize';
+import { IUser } from 'src/users/users.interface';
 
 @Controller('jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post()
-  create(@Body() createJobDto: CreateJobDto) {
-    return this.jobsService.create(createJobDto);
+  @ResponseMessage("Create a new job")
+  
+  async create( @Body()  createJobDto:CreateJobDto, @User() user:IUser) 
+  {
+    let newUser = await this.jobsService.create(createJobDto,user)
+    return {
+      _id:newUser?._id,
+      createdAt:newUser?.createdAt
+    }
   }
 
   @Get()

@@ -69,10 +69,10 @@ export class JobsService {
     return `This action returns a #${id} job`;
   }
 
-  async update(id:string,updateJobDto: UpdateJobDto,@User() user:IUser) {
-    if (!mongoose.Types.ObjectId.isValid(id)) return `not found user`;
+  async update(_id:string,updateJobDto: UpdateJobDto,@User() user:IUser) {
+    if (!mongoose.Types.ObjectId.isValid(_id)) return `not found user`;
       const updateJob = await this.jobModel.updateOne(
-      {_id:id},
+      {_id},
       {
         ...updateJobDto,
         updatedBy:{
@@ -83,9 +83,10 @@ export class JobsService {
       return updateJob
   }
 
-  async remove(id: string,user:IUser) {
+  async remove(_id: string,user:IUser) {
+    if (!mongoose.Types.ObjectId.isValid(_id)) return `not found user`;
     await this.jobModel.updateOne(
-      {_id:id},
+      {_id},
       {
         deletedBy:{
           _id:user._id,
@@ -94,7 +95,7 @@ export class JobsService {
       }
     );
     return this.jobModel.softDelete({
-      _id:id
+      _id
     })
   }
 }

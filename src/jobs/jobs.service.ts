@@ -19,7 +19,7 @@ export class JobsService {
   async create(createJobDto:CreateJobDto,@User() user:IUser){
     const {name,skills,company,salary,quantity,level,description,startDate,endDate,isActive} = createJobDto;
 
-    const newUser = this.jobModel.create({
+    const newJob =await this.jobModel.create({
       name,skills,
       company,salary,
       quantity,level,
@@ -30,7 +30,10 @@ export class JobsService {
         email:user.email
       }
     })
-    return newUser
+    return {
+      _id:newJob?._id,
+      createdAt:newJob?.createdAt
+    }
   }
 
   async findAll(currentPage :number,limit:number,qs:string) {
@@ -66,26 +69,24 @@ export class JobsService {
     return `This action returns a #${id} job`;
   }
 
-  async update(id:string,updateJobDto: UpdateJobDto,@User() user:IUser) {
-    if (!mongoose.Types.ObjectId.isValid(id)) return `not found user`;
-    const findJob =await this.jobModel.findOne({
-      _id:id
-    })
-    if (findJob) {
-      const updateJob = await this.jobModel.updateMany({
+  async update(_id:string,updateJobDto: UpdateJobDto,@User() user:IUser) {
+    if (!mongoose.Types.ObjectId.isValid(_id)) return `not found user`;
+      const updateJob = await this.jobModel.updateOne(
+      {_id},
+      {
         ...updateJobDto,
-        createdBy:{
+        updatedBy:{
           _id:user._id,
           email:user.email
         }
       })
-      return updateJob;
-    }
+      return updateJob
   }
 
-  async remove(id: string,user:IUser) {
+  async remove(_id: string,user:IUser) {
+    if (!mongoose.Types.ObjectId.isValid(_id)) return `not found user`;
     await this.jobModel.updateOne(
-      {_id:id},
+      {_id},
       {
         deletedBy:{
           _id:user._id,
@@ -94,7 +95,7 @@ export class JobsService {
       }
     );
     return this.jobModel.softDelete({
-      _id:id
+      _id
     })
   }
 }

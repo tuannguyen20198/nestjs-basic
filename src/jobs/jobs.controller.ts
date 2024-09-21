@@ -13,13 +13,9 @@ export class JobsController {
   @Post()
   @ResponseMessage("Create a new job")
   
-  async create( @Body()  createJobDto:CreateJobDto, @User() user:IUser) 
+  create( @Body()  createJobDto:CreateJobDto, @User() user:IUser) 
   {
-    let newUser = await this.jobsService.create(createJobDto,user)
-    return {
-      _id:newUser?._id,
-      createdAt:newUser?.createdAt
-    }
+    return this.jobsService.create(createJobDto,user)
   }
 
   @Get()

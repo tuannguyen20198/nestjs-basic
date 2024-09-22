@@ -3,7 +3,7 @@ import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { ResponseMessage, User } from 'src/decorator/customize';
+import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
 
 @Controller('jobs')
@@ -19,7 +19,8 @@ export class JobsController {
   }
 
   @Get()
-  @ResponseMessage("Fetch List Job with paginate")
+  @Public()
+  @ResponseMessage("Fetch jobs with paginate")
   findAll(
     @Query("current")  currentPage:string,
     @Query("pageSize")  limit:string,
@@ -30,7 +31,7 @@ export class JobsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
+    return this.jobsService.findOne(id);
   }
 
   @Patch(':id')

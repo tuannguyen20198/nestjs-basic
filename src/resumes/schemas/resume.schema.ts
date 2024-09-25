@@ -8,7 +8,7 @@ export class Resume {
   @Prop()
   email: string;
 
-  @Prop()
+  @Prop({type:Object})
   userId: {
     _id:mongoose.Schema.Types.ObjectId;
   }

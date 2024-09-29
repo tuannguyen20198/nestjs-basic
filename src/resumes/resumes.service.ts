@@ -103,6 +103,7 @@ export class ResumesService {
         }
       }
     )
+    return updated
   }
 
   async remove(id: string,user:IUser) {

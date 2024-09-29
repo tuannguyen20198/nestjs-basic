@@ -8,6 +8,9 @@ class Company {
   
     @IsNotEmpty()
     name:string;
+
+    @IsNotEmpty()
+    logo:string;
 }
 export class CreateJobDto {
 
@@ -30,6 +33,17 @@ export class CreateJobDto {
   })
   @IsString({ each: true, message: "Skills phải là chuỗi" })
   skills: string[];
+
+  @IsNotEmpty({
+    message: "Skills không được để trống"
+  })
+  location:string;
+  
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() =>Company)
+  company!:Company
 
   @IsNotEmpty({
     message:"Salary không được để trống"
@@ -69,9 +83,4 @@ export class CreateJobDto {
 
   isActive: boolean;
 
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() =>Company)
-  company!:Company
 }

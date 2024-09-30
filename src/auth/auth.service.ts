@@ -33,8 +33,8 @@ export class AuthService {
       _id,
       name,
       email,
+      role
     };
-
     const refresh_token = this.createRefreshToken(payload)
 
     //Update user with refresh token 

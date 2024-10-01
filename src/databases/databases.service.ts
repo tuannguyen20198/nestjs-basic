@@ -23,7 +23,13 @@ export class DatabasesService implements OnModuleInit{
         private configService:ConfigService,
         private userService:UsersService
     ){}
-    onModuleInit() {
+    async onModuleInit() {
+        const isInit = this.configService.get<string>("SHOULD_INIT");
+        if (Boolean(isInit)) {
+            const countUser = await this.userModel.count({})
+            const countPermission = await this.userModel.count({})
+            const countRole = await this.userModel.count({})
+        }
         console.log(`The module has been initialized.`);
     }
 }

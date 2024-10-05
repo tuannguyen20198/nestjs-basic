@@ -32,25 +32,26 @@ export class MulterConfigService implements MulterOptionsFactory {
         })
     }
 
-    createMulterOptions():MulterModuleOptions{
-        return{
-            storage:diskStorage({
-                destination:(req,file,cb)=>{
+    createMulterOptions(): MulterModuleOptions {
+        return {
+            storage: diskStorage({
+                destination: (req, file, cb) => {
                     const folder = req?.headers?.folder_type ?? "default";
                     this.ensureExists(`public/images/${folder}`);
-                    cb(null,join(this.getRootPath(),`public/images/${folder}`))
+                    cb(null, join(this.getRootPath(), `public/images/${folder}`));
                 },
-                filename:(req,file,cb) =>{
-                    //get image extension
+                filename: (req, file, cb) => {
+                    // Get image extension
                     let extName = path.extname(file.originalname);
-
-                    //get images's name (without extension)
-                    let basename = path.basename(file.originalname,extName);
+    
+                    // Get image's name (without extension)
+                    let basename = path.basename(file.originalname, extName);
                     
-                    let finalName = `${basename} - ${Date.now()}${extName}}`
-                    cb(null,finalName)
+                    // Remove the trailing '}' here
+                    let finalName = `${basename} - ${Date.now()}${extName}`;
+                    cb(null, finalName);
                 }
             })
-        }
+        };
     }
 }

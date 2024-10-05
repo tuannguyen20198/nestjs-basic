@@ -10,12 +10,17 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { IUser } from './users.interface';
 import { User } from 'src/decorator/customize';
 import aqp from 'api-query-params';
+import { Role, RoleDocument } from 'src/roles/schemas/role.schema';
+import { USER_ROLE } from 'src/databases/sample';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(UserM.name) 
-    private userModel: SoftDeleteModel<UserDocument>
+    private userModel: SoftDeleteModel<UserDocument>,
+
+    @InjectModel(Role.name)
+    private roleModel:SoftDeleteModel<RoleDocument>
     
   ) {}
   getHashPassword = (password)=>{
@@ -86,7 +91,7 @@ export class UsersService {
   findOneByUsername(username: string) {
     return this.userModel.findOne({
       email:username
-    }).populate({path: "role",select:{name:1, permissions: 1}});
+    }).populate({path: "role",select:{name:1}});
   }
 
   isValidPassword(password,hashPassword){
@@ -135,6 +140,9 @@ export class UsersService {
     if (isExist) {
       throw new BadRequestException(`Email ${email} đã tồn tại.Vui lòng đăng ký tài khoản khác`);
     }
+
+    //fetch user role 
+    const userRole = await this.roleModel.findOne({name:USER_ROLE})
     const newUser = await this.userModel.create({
       name,
       email,
@@ -142,6 +150,7 @@ export class UsersService {
       age,
       gender,
       address,
+      role:userRole?._id
     })
     return newUser
   }
@@ -154,10 +163,10 @@ export class UsersService {
     )
   }
   findUserByToken =async (refreshToken:string) => {
-    return await this.userModel.findOne(
-      {
-        refreshToken
-      }
-    )
+    return await this.userModel.findOne({refreshToken})
+    .populate({
+      path:"role",
+      select:{name:1}
+    })
   }
 }

@@ -7,23 +7,22 @@ import { IUser } from 'src/users/users.interface';
 
 @Controller('roles')
 export class RolesController {
-  constructor(private readonly rolesService: RolesService) {}
+  constructor(private readonly rolesService: RolesService) { }
 
   @Post()
   @ResponseMessage("Create a new role")
-  create(@Body() createRoleDto: CreateRoleDto,@User() user:IUser) {
-    return this.rolesService.create(createRoleDto,user);
+  create(@Body() createRoleDto: CreateRoleDto, @User() user: IUser) {
+    return this.rolesService.create(createRoleDto, user);
   }
 
   @Get()
   @ResponseMessage("Fetch roles with paginate")
   findAll(
-    @Query("current") currentPage:string,
-    @Query("pageSize") limit:string,
-    @Query() qs:string,
-
+    @Query("current") currentPage: string,
+    @Query("pageSize") limit: string,
+    @Query() qs: string
   ) {
-    return this.rolesService.findAll(+currentPage,+limit,qs);
+    return this.rolesService.findAll(+currentPage, +limit, qs);
   }
 
   @Get(':id')
@@ -33,12 +32,14 @@ export class RolesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto,@User() user) {
-    return this.rolesService.update(id, updateRoleDto,user);
+  @ResponseMessage("Update a role")
+  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto, @User() user: IUser) {
+    return this.rolesService.update(id, updateRoleDto, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string,@User() user) {
-    return this.rolesService.remove(id,user);
+  @ResponseMessage("Delete a role")
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.rolesService.remove(id, user);
   }
 }

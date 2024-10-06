@@ -116,7 +116,7 @@ export class UsersService {
     if (!mongoose.Types.ObjectId.isValid(id)) return `not found user`
 
     const foundUser = await this.userModel.findById(id);
-    if (foundUser && foundUser.email === "admin@gmail.com") {
+    if (foundUser.email === "admin@gmail.com") {
       throw new BadRequestException("Không thể tài khoản admin@gmail.com")
     }
     await this.userModel.updateOne(

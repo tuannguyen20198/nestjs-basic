@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,6 +13,7 @@ import { ResumesModule } from './resumes/resumes.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { DatabasesModule } from './databases/databases.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
 
 @Module({
   imports: [
@@ -24,10 +25,15 @@ import { DatabasesModule } from './databases/databases.module';
           connection.plugin(softDeletePlugin);
           return connection;
         }
+
       }),
       inject: [ConfigService],
     }),
-    ConfigModule.forRoot({isGlobal:true}),
+
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+
     UsersModule,
     AuthModule,
     CompaniesModule,
@@ -37,10 +43,9 @@ import { DatabasesModule } from './databases/databases.module';
     PermissionsModule,
     RolesModule,
     DatabasesModule,
+    SubscribersModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  ],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

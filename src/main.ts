@@ -19,7 +19,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist:true,
+  }));
   //config cors
   // Cấu hình CORS với NestJS (Có thể bỏ qua nếu bạn đã dùng middleware cors)
   app.enableCors({

@@ -23,13 +23,15 @@ export class MailController {
   ) {
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  testCron(){
-    console.log(">>> call me")
-  }
+  // @Cron(CronExpression.EVERY_30_SECONDS)
+  // testCron(){
+  //   console.log(">>> call me")
+  // }
 
   @Get()
   @Public()
+  @ResponseMessage("Test email")
+  @Cron("0 0 0 * * 0")
   @ResponseMessage("Test email")
   async handleTestEmail() {
     const jobs = [

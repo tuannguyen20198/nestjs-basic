@@ -75,9 +75,6 @@
     "@nestjs/cli": "9.4.2",
     "@nestjs/schematics": "9.1.0",
     "@nestjs/testing": "9.0.0",
-<<<<<<< HEAD
->>>>>>> 65cb50331c5ce6512690d86afe82ae81ad091fd6
-=======
 >>>>>>> 65cb50331c5ce6512690d86afe82ae81ad091fd6
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "5.0.0",

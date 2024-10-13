@@ -22,11 +22,7 @@ services:
       - PORT=8080
       - NODE_ENV=production
 <<<<<<< HEAD
-<<<<<<< HEAD
       - MONGO_URL=mongodb+srv://lntt2018:PGte9qzGXeT58r2R@cluster0.d3jlrd7.mongodb.net/backendnestjs
-=======
-      - MONGO_URL=mongodb://root:123456@db-mongo:27017/hoidanit?authSource=admin
->>>>>>> 65cb50331c5ce6512690d86afe82ae81ad091fd6
 =======
       - MONGO_URL=mongodb://root:123456@db-mongo:27017/hoidanit?authSource=admin
 >>>>>>> 65cb50331c5ce6512690d86afe82ae81ad091fd6

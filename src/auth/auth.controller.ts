@@ -3,21 +3,28 @@ import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { Public, ResponseMessage, User } from 'src/decorator/customize';
 import { LocalAuthGuard } from './local-auth.guard';
-import { RegisterUserDto } from 'src/users/dto/create-user.dto';
+import { RegisterUserDto, UserLoginDto } from 'src/users/dto/create-user.dto';
 import { Request,Response } from 'express';
 import { IUser } from 'src/users/users.interface';
+import { RolesService } from 'src/roles/roles.service';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 
-
+@ApiTags('auth')
 @Controller("auth")
 export class AuthController {
   constructor(
     private authService:AuthService,
+    private rolesService:RolesService
     ) 
     {}
 
     @Public()
     @UseGuards(LocalAuthGuard)
+    @UseGuards(ThrottlerGuard)
+    @Throttle(5,60)
+    @ApiBody({ type: UserLoginDto, })
     @Post('/login')
     @ResponseMessage("User Login")
     async login(@Req() req,@Res({ passthrough: true }) response: Response) {
@@ -32,7 +39,9 @@ export class AuthController {
     }
     @ResponseMessage("Get user information")
     @Get('/account')
-    handleGetAccount(@User() user:IUser) {
+    async handleGetAccount(@User() user:IUser) {
+      const temp = await this.rolesService.findOne(user.role._id) as any;
+      user.permissions = temp.permissions;
       return {user};
     }
 

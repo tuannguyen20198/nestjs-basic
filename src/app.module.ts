@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -10,9 +10,21 @@ import { CompaniesModule } from './companies/companies.module';
 import { JobsModule } from './jobs/jobs.module';
 import { FilesModule } from './files/files.module';
 import { ResumesModule } from './resumes/resumes.module';
-
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { DatabasesModule } from './databases/databases.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
+import { MailModule } from './mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { HealthModule } from './health/health.module';
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot({
+      ttl:60,
+      limit:10,
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -24,17 +36,25 @@ import { ResumesModule } from './resumes/resumes.module';
       }),
       inject: [ConfigService],
     }),
-    ConfigModule.forRoot({isGlobal:true}),
+
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+
     UsersModule,
     AuthModule,
     CompaniesModule,
     JobsModule,
     FilesModule,
     ResumesModule,
+    PermissionsModule,
+    RolesModule,
+    DatabasesModule,
+    SubscribersModule,
+    MailModule,
+    HealthModule
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  ],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

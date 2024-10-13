@@ -2,11 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { SubscribersService } from './subscribers.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { UpdateSubscriberDto } from './dto/update-subscriber.dto';
-<<<<<<< HEAD
 import { ResponseMessage, User } from 'src/decorator/customize';
-=======
-import { ResponseMessage, SkipCheckPermission, User } from 'src/decorator/customize';
->>>>>>> 213ab8fd9cd5ed82b848e4105a789ef7147a5af3
 import { IUser } from 'src/users/users.interface';
 import { ApiTags } from '@nestjs/swagger';
 @ApiTags('subscribers')
@@ -22,15 +18,9 @@ export class SubscribersController {
 
   @Post("skills")
   @ResponseMessage("Get subscriber's skills")
-<<<<<<< HEAD
-=======
-  @SkipCheckPermission()
->>>>>>> 213ab8fd9cd5ed82b848e4105a789ef7147a5af3
   getUserSkills(@User() user: IUser) {
     return this.subscribersService.getSkills(user);
   }
-
-
 
   @Get()
   @ResponseMessage("Fetch subscribers with paginate")
@@ -49,10 +39,6 @@ export class SubscribersController {
   }
 
   @Patch()
-<<<<<<< HEAD
-=======
-  @SkipCheckPermission()
->>>>>>> 213ab8fd9cd5ed82b848e4105a789ef7147a5af3
   @ResponseMessage("Update a subscriber")
   update(
     @Param('id') id: string,

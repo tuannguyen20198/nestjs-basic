@@ -22,6 +22,8 @@ export class SubscribersController {
     return this.subscribersService.getSkills(user);
   }
 
+
+
   @Get()
   @ResponseMessage("Fetch subscribers with paginate")
   findAll(

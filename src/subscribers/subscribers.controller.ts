@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { SubscribersService } from './subscribers.service';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 import { UpdateSubscriberDto } from './dto/update-subscriber.dto';
-import { ResponseMessage, SkipCheckPermission, User } from 'src/decorator/customize';
+import { ResponseMessage, User } from 'src/decorator/customize';
 import { IUser } from 'src/users/users.interface';
 import { ApiTags } from '@nestjs/swagger';
 @ApiTags('subscribers')
@@ -18,7 +18,6 @@ export class SubscribersController {
 
   @Post("skills")
   @ResponseMessage("Get subscriber's skills")
-  @SkipCheckPermission()
   getUserSkills(@User() user: IUser) {
     return this.subscribersService.getSkills(user);
   }
@@ -42,7 +41,6 @@ export class SubscribersController {
   }
 
   @Patch()
-  @SkipCheckPermission()
   @ResponseMessage("Update a subscriber")
   update(
     @Param('id') id: string,

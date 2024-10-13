@@ -35,7 +35,6 @@
     "@nestjs/terminus": "10.2.3",
     "@nestjs/throttler": "^6.2.1",
     "api-query-params": "^5.4.0",
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
@@ -67,10 +66,16 @@
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.25",
+<<<<<<< HEAD
     "@nestjs/cli": "10.4.5",
     "@nestjs/schematics": "10.1.4",
     "@nestjs/testing": "10.4.4",
     "@types/bcrypt": "^5.0.2",
+=======
+    "@nestjs/cli": "9.4.2",
+    "@nestjs/schematics": "9.1.0",
+    "@nestjs/testing": "9.0.0",
+>>>>>>> 65cb50331c5ce6512690d86afe82ae81ad091fd6
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "5.0.0",
     "@types/jest": "29.5.13",

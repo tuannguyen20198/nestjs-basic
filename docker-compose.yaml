@@ -23,6 +23,7 @@ services:
       - NODE_ENV=production
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       - MONGO_URL=mongodb+srv://lntt2018:PGte9qzGXeT58r2R@cluster0.d3jlrd7.mongodb.net/backendnestjs
 =======
       - MONGO_URL=mongodb://root:123456@db-mongo:27017/hoidanit?authSource=admin
@@ -30,6 +31,9 @@ services:
 =======
       - MONGO_URL=mongodb://root:123456@db-mongo:27017/hoidanit?authSource=admin
 >>>>>>> parent of d4e9bd6 (Merge branch 'master' of https://github.com/tuannguyen20198/nestjs-basic)
+=======
+      - MONGO_URL=mongodb+srv://lntt2018:PGte9qzGXeT58r2R@cluster0.d3jlrd7.mongodb.net/backendnestjs
+>>>>>>> parent of f40a6c3 (commit code)
       # - DB_HOST=host.docker.internal
     expose:
       - 8080
